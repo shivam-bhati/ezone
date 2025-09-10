@@ -28,7 +28,7 @@ const WhatsAppCheckout = ({ isOpen, onClose }) => {
   };
 
   const sendWhatsAppMessage = (orderDetails) => {
-    const itemsList = orderDetails.items.map(item => 
+    const itemsList = orderDetails.items.map(item =>
       `• ${item.title} x${item.quantity} - ₹${(item.price * item.quantity).toLocaleString()}`
     ).join('\n');
 
@@ -51,14 +51,14 @@ ${itemsList}
 ${orderDetails.customer.notes ? `📝 *Special Instructions:*\n${orderDetails.customer.notes}` : ''}
 
 Please confirm this order and provide delivery timeline. Thank you! 🙏`;
-    
-    const whatsappUrl = `https://wa.me/917428434177?text=${encodeURIComponent(message)}`;
+
+    const whatsappUrl = `https://wa.me/917428434147?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
   const handleSubmitOrder = (e) => {
     e.preventDefault();
-    
+
     const orderId = generateOrderId();
     const orderDetails = {
       orderId,
@@ -170,7 +170,7 @@ Please confirm this order and provide delivery timeline. Thank you! 🙏`;
                 <Phone className="w-5 h-5 mr-2" />
                 Your Contact Details
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -185,7 +185,7 @@ Please confirm this order and provide delivery timeline. Thank you! 🙏`;
                     required
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Phone Number *
@@ -232,7 +232,7 @@ Please confirm this order and provide delivery timeline. Thank you! 🙏`;
                     required
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     PIN Code *
@@ -269,7 +269,7 @@ Please confirm this order and provide delivery timeline. Thank you! 🙏`;
                   💰 Payment Method
                 </h4>
                 <p className="text-sm text-blue-700">
-                  <strong>Cash on Delivery (COD)</strong><br/>
+                  <strong>Cash on Delivery (COD)</strong><br />
                   Pay in cash when your order is delivered to your address
                 </p>
               </div>
