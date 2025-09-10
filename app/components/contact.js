@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
 
 const ContactUs = () => {
@@ -8,7 +9,7 @@ const ContactUs = () => {
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-black mb-4">Contact Us</h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Get in touch with our dedicated support team. We're here to help you with all your queries and provide the best solutions.
+            Get in touch with our dedicated support team. We&apos;re here to help you with all your queries and provide the best solutions.
           </p>
         </div>
 
@@ -16,10 +17,11 @@ const ContactUs = () => {
           {/* Left Side - Image */}
           <div className="relative">
             <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-2xl">
-              <img 
+              <Image 
                 src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
                 alt="Professional office environment" 
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
             </div>
             <div className="absolute -bottom-6 -right-6 bg-black text-white p-6 rounded-xl shadow-xl">
@@ -111,13 +113,8 @@ const ContactUs = () => {
                 </div>
               </div>
             </div>
-
-            
           </div>
         </div>
-
-        
-        
       </div>
     </div>
   );

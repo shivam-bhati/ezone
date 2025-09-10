@@ -52,7 +52,7 @@ ${orderDetails.customer.notes ? `📝 *Special Instructions:*\n${orderDetails.cu
 
 Please confirm this order and provide delivery timeline. Thank you! 🙏`;
     
-    const whatsappUrl = `https://wa.me/917428434147?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/917428434177?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
@@ -117,8 +117,8 @@ Please confirm this order and provide delivery timeline. Thank you! 🙏`;
             <div className="text-sm text-gray-600">
               <p className="mb-2">📱 <strong>Next Steps:</strong></p>
               <p className="mb-1">• Our team will review your order on WhatsApp</p>
-              <p className="mb-1">• We'll confirm availability and delivery time</p>
-              <p>• You'll receive order confirmation and tracking details</p>
+              <p className="mb-1">• We&apos;ll confirm availability and delivery time</p>
+              <p>• You&apos;ll receive order confirmation and tracking details</p>
             </div>
           </div>
         ) : (
@@ -281,10 +281,10 @@ Please confirm this order and provide delivery timeline. Thank you! 🙏`;
                   How it Works
                 </h4>
                 <div className="text-sm text-green-700 space-y-1">
-                  <p>✓ Click "Send Order via WhatsApp" below</p>
+                  <p>✓ Click &quot;Send Order via WhatsApp&quot; below</p>
                   <p>✓ WhatsApp will open with your order details</p>
                   <p>✓ Send the message to our business number</p>
-                  <p>✓ We'll confirm your order within 30 minutes</p>
+                  <p>✓ We&apos;ll confirm your order within 30 minutes</p>
                 </div>
               </div>
 
