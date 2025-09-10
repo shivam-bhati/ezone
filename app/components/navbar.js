@@ -1,154 +1,238 @@
-'use client'
-'use client'
-import { useState, useEffect } from 'react'
+// components/Navbar.jsx
+'use client';
+import React, { useState } from 'react';
+import Link from 'next/link'; // Import Next.js Link component
+import { 
+  ShoppingCart, 
+  Menu, 
+  X, 
+  User,
+  Heart,
+  MapPin,
+  Phone,
+  Mail
+} from 'lucide-react';
+import { useCart } from '../components/CartContext';
+import CartSidebar from '../components/CartSidebar';
+import LeftSidebar from '../components/leftsidebar';
 
-export default function Navigation() {
-  const [scrollY, setScrollY] = useState(0)
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { cart, getTotalItems } = useCart();
 
-  useEffect(() => {
-    setIsLoaded(true)
-    
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener('scroll', handleScroll)
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
+  // Use your logo from public folder
+  const logoSrc = "/logo1.png";
 
-  // Close mobile menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isMobileMenuOpen && !event.target.closest('nav')) {
-        setIsMobileMenuOpen(false)
-      }
-    }
+  const navItems = [
+    { name: 'Home', href: '/' }, // Updated to use '/' for home
+    { name: 'About', href: '#about' },
+    { name: 'Products', href: '/products' },
+    { name: 'Contact', href: '#contact' }
+  ];
 
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
-  }, [isMobileMenuOpen])
+  const toggleCart = () => setIsCartOpen(!isCartOpen);
+  const closeCart = () => setIsCartOpen(false);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const closeSidebar = () => setIsSidebarOpen(false);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen)
-  }
-
-  const handleNavClick = (item) => {
-    const targetId = item.toLowerCase()
-    const element = document.getElementById(targetId)
-    
-    if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      })
-    }
-    
-    // Close mobile menu after clicking
-    setIsMobileMenuOpen(false)
-  }
-
-  const navItems = ['Home', 'Services', 'About', 'Portfolio', 'Contact']
+  const totalCartItems = getTotalItems();
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-700 ${
-        scrollY > 50 ? 'bg-white/95 backdrop-blur-xl shadow-lg' : 'bg-transparent'
-      } ${isLoaded ? 'translate-y-0' : '-translate-y-full'}`}>
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 w-full">
-            
-            {/* Logo */}
-            <div className="flex items-center space-x-3 flex-shrink-0">
-              <div className="relative">
-                <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center transform rotate-12">
-                  <span className="text-white font-bold text-lg transform -rotate-12">E</span>
-                </div>
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-gray-400 rounded-full animate-pulse"></div>
+      {/* Top Bar */}
+      <div className="bg-indigo-800 text-white py-2 hidden lg:block">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center text-sm">
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-1">
+                <Phone className="w-4 h-4" />
+                <span>+91 98765 43210</span>
               </div>
-              <div className="hidden sm:block">
-                <h1 className="font-bold text-black text-lg">E-Zone Techno</h1>
-                <p className="text-xs text-gray-500 -mt-1">Services</p>
+              <div className="flex items-center space-x-1">
+                <Mail className="w-4 h-4" />
+                <span>corporate@giftingpro.com</span>
               </div>
-              <div className="sm:hidden">
-                <h1 className="font-bold text-black text-base">E-Zone</h1>
+              <div className="flex items-center space-x-1">
+                <MapPin className="w-4 h-4" />
+                <span>Free delivery for bulk orders</span>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <button className="hover:text-indigo-300 transition-colors">Track Order</button>
+              <button className="hover:text-indigo-300 transition-colors">Corporate Solutions</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Navbar */}
+      <nav className="bg-white shadow-lg sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            {/* Left Side - Menu Button and Logo */}
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={toggleSidebar}
+                className="flex items-center space-x-2 text-gray-700 hover:text-indigo-600 transition-colors p-2 hover:bg-gray-100 rounded-lg border border-gray-200 hover:border-indigo-200"
+              >
+                <Menu className="w-5 h-5" />
+                <span className="hidden sm:inline text-sm font-medium">Categories</span>
+              </button>
+
+              {/* Logo - Clickable link to home page */}
+              <div className="flex items-center py-2">
+                {logoSrc ? (
+                  <Link 
+                    href="/" 
+                    className="flex items-center hover:opacity-80 transition-opacity duration-200"
+                  >
+                    <img 
+                      src={logoSrc} 
+                      alt="Company Logo - Go to Home" 
+                      className="h-12 sm:h-14 md:h-16 w-auto object-contain max-w-[200px] sm:max-w-[250px] md:max-w-[300px] cursor-pointer"
+                    />
+                  </Link>
+                ) : (
+                  // Enhanced fallback design with home link
+                  <Link 
+                    href="/" 
+                    className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-200"
+                  >
+                    <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-indigo-600 to-purple-600 text-white rounded-lg shadow-md">
+                      <span className="text-lg md:text-xl font-bold">GP</span>
+                    </div>
+                    <div>
+                      <h1 className="text-xl md:text-2xl font-bold text-indigo-600">GiftingPro</h1>
+                      <span className="text-sm bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full">
+                        Corporate
+                      </span>
+                    </div>
+                  </Link>
+                )}
               </div>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8 flex-grow justify-center">
+            <div className="hidden lg:flex items-center space-x-8">
               {navItems.map((item) => (
-                <button
-                  key={item}
-                  onClick={() => handleNavClick(item)}
-                  className="text-black hover:text-gray-600 transition-colors duration-200 font-medium relative group whitespace-nowrap"
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
                 >
-                  {item}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
-                </button>
+                  {item.name}
+                </Link>
               ))}
             </div>
 
-            {/* CTA Button and Mobile Menu */}
-            <div className="flex items-center space-x-4 flex-shrink-0">
-              <button className="hidden sm:block bg-gradient-to-r from-yellow-500 to-yellow-600 text-black px-6 py-2.5 rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 whitespace-nowrap">
-                Get Quote
+            {/* Right Side Icons */}
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <button className="hidden lg:flex items-center space-x-1 text-gray-700 hover:text-indigo-600 transition-colors p-2 rounded-lg hover:bg-gray-50">
+                <User className="w-5 h-5" />
+                <span className="text-sm">Account</span>
               </button>
-              
-              {/* Mobile Menu Button */}
+
+              <button className="hidden lg:flex items-center space-x-1 text-gray-700 hover:text-indigo-600 transition-colors p-2 rounded-lg hover:bg-gray-50">
+                <Heart className="w-5 h-5" />
+                <span className="text-sm">Wishlist</span>
+              </button>
+
               <button 
-                className="md:hidden p-2 relative z-60"
-                onClick={toggleMobileMenu}
-                aria-label="Toggle mobile menu"
+                onClick={toggleCart}
+                className="flex items-center space-x-1 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg transition-colors relative"
               >
-                <div className="w-6 h-5 flex flex-col justify-between">
-                  <span className={`w-full h-0.5 bg-black transition-all duration-300 ${
-                    isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''
-                  }`}></span>
-                  <span className={`w-full h-0.5 bg-black transition-all duration-300 ${
-                    isMobileMenuOpen ? 'opacity-0' : ''
-                  }`}></span>
-                  <span className={`w-full h-0.5 bg-black transition-all duration-300 ${
-                    isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
-                  }`}></span>
-                </div>
+                <ShoppingCart className="w-5 h-5" />
+                <span className="hidden sm:inline text-sm">Cart</span>
+                <span className="text-sm">({totalCartItems})</span>
+                {totalCartItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse">
+                    {totalCartItems}
+                  </span>
+                )}
+              </button>
+
+              <button
+                onClick={toggleMenu}
+                className="lg:hidden text-gray-700 hover:text-indigo-600 p-2 rounded-lg hover:bg-gray-50"
+              >
+                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`lg:hidden border-t bg-white transition-all duration-300 ease-in-out overflow-hidden ${
+          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}>
+          <div className="px-4 py-4 space-y-3">
+            <div className="flex items-center justify-around pb-3 border-b border-gray-100">
+              <button className="flex items-center space-x-2 text-gray-700 hover:text-indigo-600 transition-colors p-2 rounded-lg hover:bg-gray-50">
+                <User className="w-5 h-5" />
+                <span>Account</span>
+              </button>
+              <button className="flex items-center space-x-2 text-gray-700 hover:text-indigo-600 transition-colors p-2 rounded-lg hover:bg-gray-50">
+                <Heart className="w-5 h-5" />
+                <span>Wishlist</span>
+              </button>
+            </div>
+
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={closeMenu}
+                className="block py-3 px-2 text-gray-800 font-medium hover:text-indigo-600 hover:bg-gray-50 rounded-lg transition-colors"
+              >
+                {item.name}
+              </Link>
+            ))}
+
+            <div className="pt-3 border-t border-gray-100">
+              <button
+                onClick={() => {
+                  toggleSidebar();
+                  closeMenu();
+                }}
+                className="w-full flex items-center space-x-2 bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 transition-colors"
+              >
+                <Menu className="w-5 h-5" />
+                <span className="font-medium">Browse Categories</span>
+              </button>
+            </div>
+
+            <div className="pt-3 border-t border-gray-100 grid grid-cols-2 gap-2">
+              <button className="text-left py-2 px-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg transition-colors">
+                Track Order
+              </button>
+              <button className="text-left py-2 px-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg transition-colors">
+                Corporate Solutions
               </button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 md:hidden ${
-        isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-      }`} onClick={() => setIsMobileMenuOpen(false)}></div>
+      {isMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+          onClick={closeMenu}
+        />
+      )}
 
-      {/* Mobile Menu */}
-      <div className={`fixed top-16 left-0 right-0 bg-white/95 backdrop-blur-xl shadow-lg z-40 transition-all duration-300 md:hidden ${
-        isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
-      }`}>
-        <div className="w-full max-w-7xl mx-auto px-4 py-6">
-          <div className="space-y-4">
-            {navItems.map((item) => (
-              <button
-                key={item}
-                onClick={() => handleNavClick(item)}
-                className="block w-full text-left text-black hover:text-gray-600 transition-colors duration-200 font-medium py-3 px-2 hover:bg-gray-50 rounded-lg"
-              >
-                {item}
-              </button>
-            ))}
-            
-            {/* Mobile CTA Button */}
-            <div className="pt-4 border-t border-gray-200">
-              <button className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-black px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300">
-                Get Quote
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <LeftSidebar 
+        isOpen={isSidebarOpen} 
+        onClose={closeSidebar} 
+        logoSrc={logoSrc}
+      />
+
+      <CartSidebar isOpen={isCartOpen} onClose={closeCart} />
     </>
-  )
-}
+  );
+};
+
+export default Navbar;

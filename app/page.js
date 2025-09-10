@@ -7,19 +7,28 @@ import ContactSection from "./components/contact";
 import EZoneIndustrialSection from "./components/supplies";
 import EZoneServices from "./components/services2";
 import WhyChooseEZone from "./components/whychoose";
+import ProductSection from "./components/products/ProductSection";
+import MinimalProductDuo from "./components/MinimalProductDuo";
 export default function Home() {
+
+
   return (
-    <div className="bg-gray-50">
-      
+    
+    <div >
       <Navigation />
       <Hero />
       <AboutSection />
+      <ProductSection />
       <Services />
       <EZoneIndustrialSection />
+      <MinimalProductDuo />
       <EZoneServices />
       <WhyChooseEZone />
       <ContactSection />
       <Footer />
     </div>
+    
+
+    
   );
 }
