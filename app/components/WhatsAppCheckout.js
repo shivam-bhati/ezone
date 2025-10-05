@@ -52,7 +52,7 @@ ${orderDetails.customer.notes ? `📝 *Special Instructions:*\n${orderDetails.cu
 
 Please confirm this order and provide delivery timeline. Thank you! 🙏`;
 
-    const whatsappUrl = `https://wa.me/917428434147?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/919667322472?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
